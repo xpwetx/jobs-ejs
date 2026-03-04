@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    require: [true, "Email is required."],
+    required: [true, "Email is required."],
     unique: true,
     lowercase: true,
     trim: true,
@@ -20,6 +20,12 @@ password: {
   required: [true, "Password is required."],
   minlength: [6, "Password must be at least 6 characters."],
 },
+
+secretWord: {
+  type: String,
+  default: "syzygy",
+}
+
 })
 
 // Pre-save hook to hash the password before saving

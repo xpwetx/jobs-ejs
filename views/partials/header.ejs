@@ -1,22 +1,58 @@
-<h1>The Jobs EJS Application</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Jobs EJS App</title>
+</head>
+<body>
+
+<header>
+  <h1>The Jobs EJS Application</h1>
 
 <% if (user) { %>
   <p>User <%= user.name %> is logged on.</p>
-  <form method="POST" action="/sessions/logoff">
-  <button>Logoff</button>
-  </form>
+
+  <nav>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/jobs">Jobs</a></li>
+      <li><a href="/secretWord">Secret Word</a></li>
+      <li>
+        <form method="POST" action="/sessions/logoff" style="display:inline;">
+          <input type="hidden" name="_csrf" value="<%= _csrf %>">
+          <button type="submit">Logoff</button>
+        </form>
+      </li>
+    </ul>
+  </nav>
+
+<% } else { %>
+  <nav>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/sessions/login">Login</a></li>
+      <li><a href="/sessions/register">Register</a></li>
+    </ul>
+  </nav>
 <% } %>
 
-<% if (errors && errors.length > 0) { %> 
-  <% errors.forEach((err) => { %>
-    <div style="color: red;">Error: <%= err %></div>
-  <% }) %>
+<!-- Flash messages -->
+<% if (error && error.length > 0) { %>
+  <ul style="color:red;">
+    <% error.forEach(msg => { %>
+      <li><%= msg %></li>
+    <% }) %>
+  </ul>
 <% } %>
 
 <% if (info && info.length > 0) { %>
-  <% info.forEach((msg) => { %>
-    <div style="color: green;">Info: <%= msg %></div>
-  <% }) %>
+  <ul style="color:green;">
+    <% info.forEach(msg => { %>
+      <li><%= msg %></li>
+    <% }) %>
+  </ul>
 <% } %>
-<hr />
+
+</header>
+
 

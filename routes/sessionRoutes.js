@@ -11,12 +11,12 @@ router
 
 // Logon
 router
-  .route("/logon")
+  .route("/login")
   .get(sessionController.logonShow)
   .post(
     passport.authenticate("local", {
       successRedirect: "/",
-      failureRedirect: "/sessions/logon",
+      failureRedirect: "/sessions/login",
       failureFlash: true,
     })
   );

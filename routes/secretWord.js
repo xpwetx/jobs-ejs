@@ -1,24 +1,32 @@
 const express = require("express");
 const router = express.Router();
 
+// GET /secretWord
 router.get("/", (req, res) => {
-  if (!req.session.secretWord) {
-    req.session.secretWord = "syzygy";
-  }
-
-  res.render("secretWord", { secretWord: req.session.secretWord });
+  res.render("secretWord", {
+    secretWord: req.user.secretWord,
+  });
 });
 
-router.post("/", (req, res) => {
-  if (req.body.secretWord.toUpperCase()[0] == "P") {
-    req.flash("error", "That word won't work!");
-    req.flash("error", "You can't use words that start with p.");
-  } else {
-    req.session.secretWord = req.body.secretWord;
-    req.flash("info", "The secret word was changed.");
-  }
+// POST /secretWord
+router.post("/", async (req, res) => {
+  try {
+    const newWord = req.body.secretWord;
 
-  res.redirect("/secretWord");
+    if (newWord.toUpperCase()[0] === "P") {
+      req.flash("error", "You can't use words that start with P.");
+    } else {
+      req.user.secretWord = newWord;
+      await req.user.save(); // important!
+      req.flash("info", "The secret word was changed.");
+    }
+
+    res.redirect("/secretWord");
+  } catch (err) {
+    console.error(err);
+    req.flash("error", "Something went wrong while updating the secret word.");
+    res.redirect("/secretWord");
+  }
 });
 
 module.exports = router;

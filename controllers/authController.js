@@ -14,14 +14,14 @@ exports.logonShow = (req, res) => {
 // Handle registration
 exports.registerDo = async (req, res) => {
   try {
-    const { username, password, confirmPassword } = req.body;
+    const { name, email, password, password1 } = req.body;
 
-    if (password !== confirmPassword) {
+    if (password !== password1) {
       req.flash("error", "Passwords do not match.");
       return res.redirect("/register");
     }
 
-    await User.create({ username, password });
+    await User.create(req.body);
 
     res.redirect("/");
   } catch (e) {
@@ -42,8 +42,8 @@ exports.registerDo = async (req, res) => {
 
 // Handle logoff
 exports.logoff = (req, res, next) => {
-  req.logout(function (err) {
+  req.logout(function(err) {
     if (err) return next(err);
-    res.redirect("/");
+    res.redirect("/sessions/login");
   });
 };

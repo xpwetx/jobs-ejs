@@ -22,6 +22,6 @@ router.post(
 );
 
 // Logoff
-router.get("/logout", authController.logoff);
+router.post('/logoff', authController.logoff);
 
 module.exports = router;
