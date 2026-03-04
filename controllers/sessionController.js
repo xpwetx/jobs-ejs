@@ -8,10 +8,10 @@ const registerShow = (req, res) => {
 
 // Handle Registration
 const registerDo = async (req, res, next) => {
-  const { name, email, password, confirmPassword } = req.body;
+  const { name, email, password, password1 } = req.body;
 
   // password match check
-  if (password !== confirmPassword) {
+  if (req.body.password !== req.body.password1) {
     req.flash("error", "Passwords do not match.");
     return res.render("register", { errors: req.flash("error") });
   }
@@ -21,7 +21,7 @@ const registerDo = async (req, res, next) => {
     await User.create({ name, email, password });
 
     req.flash("info", "Registration successful. Please log in.");
-    res.redirect("/logon");
+    res.redirect("/");
   } catch (e) {
     if (e.constructor.name === "ValidationError") {
       parseVErr(e, req);
@@ -39,14 +39,14 @@ const logonShow = (req, res) => {
   if (req.user) {
     return res.redirect("/");
   }
-  res.render("logon", {});
+  res.render("login");
 };
 
 // Handle Logoff
-const logoff = (req, res) => {
-  req.session.destroy((err) => {
-    if (err) console.log(err);
-    res.redirect("/");
+const logoff = (req, res, next) => {
+  req.logout(function(err) {
+    if (err) return next(err);
+    res.redirect("/sessions/login");
   });
 };
 

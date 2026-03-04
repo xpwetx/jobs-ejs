@@ -1,3 +1,5 @@
+
+<!DOCTYPE html>
 <%- include("partials/head.ejs") %>
 <%- include("partials/header.ejs") %>
 
@@ -5,15 +7,16 @@
 
 
 <!-- Display registration errors -->
-<% if (errors && errors.length > 0) { %>
+<% if (error && error.length > 0) { %>
   <ul style="color: red;">
-    <% errors.forEach(err => { %>
+    <% error.forEach(err => { %>
       <li><%= err %></li>
     <% }) %>
   </ul>
 <% } %>
 
-<form action="/register" method="POST">
+<form method="POST" action="/register" >
+  <input type="hidden" name="_csrf" value="<%= _csrf %>" />
   <div>
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" required />
@@ -28,7 +31,7 @@
   </div>
   <div>
     <label for="confirmPassword">Confirm Password:</label>
-    <input type="password" id="confirmPassword" name="confirmPassword" required />
+    <input type="password" name="password1" />
   </div>
   <div>
     <button type="submit">Register</button>
