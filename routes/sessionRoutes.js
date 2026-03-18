@@ -1,13 +1,13 @@
 const express = require("express");
 const passport = require("passport");
 const router = express.Router();
-const sessionController = require("../controllers/sessionController")
+const sessionController = require("../controllers/sessionController");
 
 // Register
 router
   .route("/register")
   .get(sessionController.registerShow)
-  .post(sessionController.registerDo)
+  .post(sessionController.registerDo);
 
 // Logon
 router
@@ -16,12 +16,12 @@ router
   .post(
     passport.authenticate("local", {
       successRedirect: "/",
-      failureRedirect: "/sessions/logon",
+      failureRedirect: "/logon", 
       failureFlash: true,
     })
   );
 
 // Logoff   
-router.post("/logoff", sessionController.logoff)
+router.post("/logoff", sessionController.logoff);
 
 module.exports = router;
